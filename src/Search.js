@@ -1,8 +1,25 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { search } from './BooksAPI';
+import Book from './Book';
 
 export default class Search extends Component {
+  state = {
+    books: [],
+  };
+
+  componentDidMount() {
+    console.log('search mounted');
+    search('Android')
+      .then(books => {
+        console.log(books);
+        this.setState({ books });
+      })
+      .catch(e => console.log('error', e));
+  }
+
   render() {
+    const { books } = this.state;
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -22,7 +39,11 @@ export default class Search extends Component {
           </div>
         </div>
         <div className="search-books-results">
-          <ol className="books-grid"></ol>
+          <ol className="books-grid">
+            {books.map((book, index) => (
+              <Book key={index} book={book} />
+            ))}
+          </ol>
         </div>
       </div>
     );
