@@ -9,7 +9,6 @@ class BooksApp extends React.Component {
   state = {};
 
   render() {
-    console.log(this);
     return (
       <div className="app">
         <Switch>
