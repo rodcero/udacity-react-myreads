@@ -7,25 +7,44 @@ import Search from './Search';
 
 class BooksApp extends React.Component {
   state = {
-    shelves: {
-      currentlyReading: { title: 'Currently Reading', books: [] },
-      wantToRead: { title: 'Want to Read', books: [] },
-      read: { title: 'Read', books: [] },
-    },
+    currentlyReading: { title: 'Currently Reading', books: [] },
+    wantToRead: { title: 'Want to Read', books: [] },
+    read: { title: 'Read', books: [] },
   };
 
   componentWillMount() {
-    let { shelves } = this.state;
+    const prev = this.state;
     BooksAPI.getAll().then(books => {
       books.forEach(book => {
-        shelves[book.shelf].books.push(book);
+        prev[book.shelf].books.push(book);
       });
-      this.setState({ shelves });
+      this.setState({ ...prev });
     });
   }
 
+  onMove = (book, shelf) => {
+    this.remove(book);
+    book.shelf = shelf;
+    if (shelf === 'none') return;
+    this.setState(prev => ({
+      ...prev,
+      [shelf]: {
+        ...prev[shelf],
+        books: [...prev[shelf].books, book],
+      },
+    }));
+  };
+
+  remove = book => {
+    const shelves = this.state;
+    let books = shelves[book.shelf].books;
+    books = books.filter(b => b.id !== book.id);
+    shelves[book.shelf].books = books;
+    this.setState({ ...shelves });
+  };
+
   render() {
-    const { shelves } = this.state;
+    const state = this.state;
 
     return (
       <div className="app">
@@ -40,8 +59,13 @@ class BooksApp extends React.Component {
               </div>
               <div className="list-books-content">
                 <div>
-                  {Object.entries(shelves).map(([key, { title, books }]) => (
-                    <Bookshelf key={key} title={title} books={books} />
+                  {Object.entries(state).map(([key, { title, books }]) => (
+                    <Bookshelf
+                      key={key}
+                      title={title}
+                      books={books}
+                      onMove={this.onMove}
+                    />
                   ))}
                 </div>
               </div>

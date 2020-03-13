@@ -1,10 +1,14 @@
 import React from 'react';
 
-export default function Book({ book }) {
-  console.log(book);
+export default function Book({ book, onMove }) {
   if (!book) {
     return null;
   }
+
+  const move = ev => {
+    const { value } = ev.target;
+    onMove(value);
+  };
 
   return (
     <div className="book">
@@ -18,7 +22,7 @@ export default function Book({ book }) {
           }}
         ></div>
         <div className="book-shelf-changer">
-          <select>
+          <select value={book.shelf} onChange={move}>
             <option value="move" disabled>
               Move to...
             </option>
