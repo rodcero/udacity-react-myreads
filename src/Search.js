@@ -6,20 +6,32 @@ import Book from './Book';
 export default class Search extends Component {
   state = {
     books: [],
+    searchText: '',
   };
 
   componentDidMount() {
     console.log('search mounted');
-    search('Android')
-      .then(books => {
-        console.log(books);
-        this.setState({ books });
-      })
-      .catch(e => console.log('error', e));
   }
 
+  searchBook(query) {
+    if (query) {
+      search(query)
+        .then(books => {
+          console.log(books);
+          this.setState({ books });
+        })
+        .catch(e => console.log('error', e));
+    }
+  }
+
+  onSearchChange = e => {
+    const { value } = e.target;
+    this.setState({ searchText: value });
+    this.searchBook(value);
+  };
+
   render() {
-    const { books } = this.state;
+    const { books, searchText } = this.state;
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -35,7 +47,12 @@ export default class Search extends Component {
                   However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
                   you don't find a specific author or title. Every search is limited by search terms.
                 */}
-            <input type="text" placeholder="Search by title or author" />
+            <input
+              type="text"
+              placeholder="Search by title or author"
+              onChange={this.onSearchChange}
+              value={searchText}
+            />
           </div>
         </div>
         <div className="search-books-results">
