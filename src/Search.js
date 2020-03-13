@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { search } from './BooksAPI';
+import * as BooksAPI from './BooksAPI';
 import Book from './Book';
 
 export default class Search extends Component {
@@ -15,7 +15,7 @@ export default class Search extends Component {
 
   searchBook(query) {
     if (query) {
-      search(query)
+      BooksAPI.search(query)
         .then(books => {
           console.log(books);
           this.setState({ books });

@@ -1,6 +1,11 @@
 import React from 'react';
 
 export default function Book({ book }) {
+  console.log(book);
+  if (!book) {
+    return null;
+  }
+
   return (
     <div className="book">
       <div className="book-top">
