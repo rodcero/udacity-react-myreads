@@ -30,6 +30,10 @@ export default class Search extends Component {
     this.searchBook(value);
   };
 
+  onMove = (book, shelf) => {
+    this.props.onAdd(book, shelf);
+  };
+
   render() {
     const { books, searchText } = this.state;
     return (
@@ -58,7 +62,11 @@ export default class Search extends Component {
         <div className="search-books-results">
           <ol className="books-grid">
             {books.map((book, index) => (
-              <Book key={index} book={book} />
+              <Book
+                key={index}
+                book={book}
+                onMove={shelf => this.onMove(book, shelf)}
+              />
             ))}
           </ol>
         </div>

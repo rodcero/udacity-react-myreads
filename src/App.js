@@ -23,19 +23,26 @@ class BooksApp extends React.Component {
   }
 
   onMove = (book, shelf) => {
-    this.remove(book);
-    book.shelf = shelf;
+    this.removeBook(book);
     if (shelf === 'none') return;
-    this.setState(prev => ({
-      ...prev,
-      [shelf]: {
-        ...prev[shelf],
-        books: [...prev[shelf].books, book],
-      },
-    }));
+    this.addBook(book, shelf);
   };
 
-  remove = book => {
+  addBook = (book, shelf) => {
+    BooksAPI.update(book, shelf).then(res => {
+      console.log('res', res);
+      book.shelf = shelf;
+      this.setState(prev => ({
+        ...prev,
+        [shelf]: {
+          ...prev[shelf],
+          books: [...prev[shelf].books, book],
+        },
+      }));
+    });
+  };
+
+  removeBook = book => {
     const shelves = this.state;
     let books = shelves[book.shelf].books;
     books = books.filter(b => b.id !== book.id);
@@ -50,7 +57,7 @@ class BooksApp extends React.Component {
       <div className="app">
         <Switch>
           <Route exact path="/search">
-            <Search />
+            <Search onAdd={this.addBook} />
           </Route>
           <Route exact path="/">
             <div className="list-books">
