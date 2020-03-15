@@ -31,7 +31,7 @@ class BooksApp extends React.Component {
     });
   }
 
-  onMove = (book, shelf) => {
+  updateBook = (book, shelf) => {
     BooksAPI.update(book, shelf).then(booksByShelf => {
       this.setState(prev => ({
         books: { ...prev.books, [book.id]: { ...book, shelf } },
@@ -46,16 +46,6 @@ class BooksApp extends React.Component {
     });
   };
 
-  addBook = (book, shelf) => {
-    book.shelf = shelf;
-    return BooksAPI.update(book, shelf).then(booksByShelf => {
-      this.setState(prev => ({
-        books: { ...prev.books, [book.id]: book },
-        booksByShelf,
-      }));
-    });
-  };
-
   render() {
     const { shelfs, books, booksByShelf } = this.state;
 
@@ -63,7 +53,7 @@ class BooksApp extends React.Component {
       <div className="app">
         <Switch>
           <Route exact path="/search">
-            <Search onAdd={this.addBook} bookCollection={books} />
+            <Search onAdd={this.updateBook} bookCollection={books} />
           </Route>
           <Route exact path="/">
             <div className="list-books">
@@ -77,7 +67,7 @@ class BooksApp extends React.Component {
                       key={key}
                       title={title}
                       books={booksByShelf[key].map(id => books[id])}
-                      onMove={this.onMove}
+                      onMove={this.updateBook}
                     />
                   ))}
                 </div>
