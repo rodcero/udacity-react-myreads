@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 export default function Book({ book, onShelve, shelved, shelf }) {
   const shelfNames = {
@@ -23,7 +24,9 @@ export default function Book({ book, onShelve, shelved, shelf }) {
                 : 'none',
               border: shelved && '5px solid #de773a',
             }}
-          ></div>
+          >
+            <Link className="book-link" to={`book/${book.id}`}></Link>
+          </div>
           <div className="book-shelf-changer">
             <select value={shelf} onChange={ev => onShelve(ev.target.value)}>
               <option value="move" disabled>

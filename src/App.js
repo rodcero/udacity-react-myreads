@@ -4,6 +4,7 @@ import './App.css';
 import Bookshelf from './Bookshelf';
 import { Route, Switch, Link } from 'react-router-dom';
 import Search from './Search';
+import BookDetails from './BookDetails';
 
 class BooksApp extends React.Component {
   state = {
@@ -77,6 +78,13 @@ class BooksApp extends React.Component {
               </div>
             </div>
           </Route>
+          <Route
+            path="/book/:bookId"
+            render={props => {
+              const { bookId } = props.match.params;
+              return <BookDetails bookId={bookId} />;
+            }}
+          ></Route>
         </Switch>
       </div>
     );
