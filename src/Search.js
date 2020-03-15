@@ -35,6 +35,7 @@ export default class Search extends Component {
   };
 
   render() {
+    const { bookCollection } = this.props;
     const { books, searchText } = this.state;
     return (
       <div className="search-books">
@@ -65,6 +66,7 @@ export default class Search extends Component {
               <Book
                 key={index}
                 book={book}
+                isDisabled={bookCollection[book.id] != null}
                 onMove={shelf => this.onMove(book, shelf)}
               />
             ))}
