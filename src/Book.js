@@ -20,7 +20,7 @@ export default function Book({ book, onMove, disable, disableDelete }) {
           {!disable && (
             <div className="book-shelf-changer">
               <select
-                value={book.shelf || 'move'}
+                value={book.shelf || 'none'}
                 onChange={ev => onMove(ev.target.value)}
               >
                 <option value="move" disabled>
