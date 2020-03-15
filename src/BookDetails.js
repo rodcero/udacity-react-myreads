@@ -12,7 +12,8 @@ export default class BookDetails extends Component {
   };
 
   componentDidMount() {
-    BooksAPI.get(this.props.bookId).then(book => this.setState({ book }));
+    const { bookId } = this.props;
+    BooksAPI.get(bookId).then(book => this.setState({ book }));
   }
 
   render() {
