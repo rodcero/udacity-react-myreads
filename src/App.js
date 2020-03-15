@@ -53,7 +53,7 @@ class BooksApp extends React.Component {
       <div className="app">
         <Switch>
           <Route exact path="/search">
-            <Search onAdd={this.updateBook} bookCollection={books} />
+            <Search onShelve={this.updateBook} bookCollection={books} />
           </Route>
           <Route exact path="/">
             <div className="list-books">
@@ -67,7 +67,7 @@ class BooksApp extends React.Component {
                       key={key}
                       title={title}
                       books={booksByShelf[key].map(id => books[id])}
-                      onMove={this.updateBook}
+                      onShelve={this.updateBook}
                     />
                   ))}
                 </div>

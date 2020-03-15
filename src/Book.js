@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-export default function Book({ book, onMove, shelved, shelf }) {
+export default function Book({ book, onShelve, shelved, shelf }) {
   const shelfNames = {
     currentlyReading: 'Currently Reading',
     wantToRead: 'Want to Read',
@@ -25,7 +25,7 @@ export default function Book({ book, onMove, shelved, shelf }) {
             }}
           ></div>
           <div className="book-shelf-changer">
-            <select value={shelf} onChange={ev => onMove(ev.target.value)}>
+            <select value={shelf} onChange={ev => onShelve(ev.target.value)}>
               <option value="move" disabled>
                 Move to...
               </option>
@@ -52,7 +52,7 @@ Book.defaultProps = {
 
 Book.propTypes = {
   book: PropTypes.object.isRequired,
-  onMove: PropTypes.func.isRequired,
+  onShelve: PropTypes.func.isRequired,
   shelved: PropTypes.bool.isRequired,
   shelf: PropTypes.string.isRequired,
 };

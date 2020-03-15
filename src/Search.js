@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 export default class Search extends Component {
   static propTypes = {
     bookCollection: PropTypes.object.isRequired,
+    onShelve: PropTypes.func.isRequired,
   };
 
   state = {
@@ -34,12 +35,8 @@ export default class Search extends Component {
     this.searchBook(value);
   };
 
-  onMove = (book, shelf) => {
-    this.props.onAdd(book, shelf);
-  };
-
   render() {
-    const { bookCollection } = this.props;
+    const { bookCollection, onShelve } = this.props;
     const { books, searchText, error } = this.state;
     return (
       <div className="search-books">
@@ -93,7 +90,7 @@ export default class Search extends Component {
                     bookCollection[book.id] && bookCollection[book.id].shelf
                   }
                   shelved={bookCollection[book.id] != null}
-                  onMove={shelf => this.onMove(book, shelf)}
+                  onShelve={shelf => onShelve(book, shelf)}
                 />
               ))
             )}
