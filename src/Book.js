@@ -11,7 +11,9 @@ export default function Book({ book, onMove, disable, disableDelete }) {
             style={{
               width: 128,
               height: 193,
-              backgroundImage: `url("${book.imageLinks.thumbnail}")`,
+              backgroundImage: book.imageLinks
+                ? `url("${book.imageLinks.thumbnail}")`
+                : 'none',
               opacity: disable && '.5',
             }}
           ></div>

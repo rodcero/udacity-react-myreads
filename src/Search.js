@@ -22,6 +22,7 @@ export default class Search extends Component {
           this.setState({ books, error: false });
         })
         .catch(e => {
+          console.log(e);
           this.setState({ books: [], error: true });
         });
     }
