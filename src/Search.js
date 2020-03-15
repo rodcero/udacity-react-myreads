@@ -2,25 +2,28 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import * as BooksAPI from './BooksAPI';
 import Book from './Book';
+import PropTypes from 'prop-types';
 
 export default class Search extends Component {
+  static propTypes = {
+    bookCollection: PropTypes.object.isRequired,
+  };
+
   state = {
     books: [],
     searchText: '',
+    error: false,
   };
-
-  componentDidMount() {
-    console.log('search mounted');
-  }
 
   searchBook(query) {
     if (query) {
       BooksAPI.search(query)
         .then(books => {
-          console.log(books);
-          this.setState({ books });
+          this.setState({ books, error: false });
         })
-        .catch(e => console.log('error', e));
+        .catch(e => {
+          this.setState({ books: [], error: true });
+        });
     }
   }
 
@@ -36,7 +39,7 @@ export default class Search extends Component {
 
   render() {
     const { bookCollection } = this.props;
-    const { books, searchText } = this.state;
+    const { books, searchText, error } = this.state;
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -62,14 +65,34 @@ export default class Search extends Component {
         </div>
         <div className="search-books-results">
           <ol className="books-grid">
-            {books.map((book, index) => (
-              <Book
-                key={index}
-                book={book}
-                isDisabled={bookCollection[book.id] != null}
-                onMove={shelf => this.onMove(book, shelf)}
-              />
-            ))}
+            {error ? (
+              <div>
+                <div>
+                  <b>ERROR:</b> There was and error getting list of books, make
+                  sure you are using correct search terms.
+                </div>
+                <div>
+                  <b>NOTES:</b> The search from BooksAPI is limited to a
+                  particular set of search terms. You can find these search
+                  terms here:
+                </div>
+                <a
+                  href="https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md"
+                  target="_blank"
+                >
+                  Search terms here.
+                </a>
+              </div>
+            ) : (
+              books.map((book, index) => (
+                <Book
+                  key={index}
+                  book={book}
+                  disable={bookCollection[book.id] != null}
+                  onMove={shelf => this.onMove(book, shelf)}
+                />
+              ))
+            )}
           </ol>
         </div>
       </div>

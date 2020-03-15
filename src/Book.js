@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-export default function Book({ book, onMove, isDisabled }) {
+export default function Book({ book, onMove, disable }) {
   return (
     <li>
       <div className="book">
@@ -12,10 +12,10 @@ export default function Book({ book, onMove, isDisabled }) {
               width: 128,
               height: 193,
               backgroundImage: `url("${book.imageLinks.thumbnail}")`,
-              opacity: isDisabled && '.5',
+              opacity: disable && '.5',
             }}
           ></div>
-          {!isDisabled && (
+          {!disable && (
             <div className="book-shelf-changer">
               <select
                 value={book.shelf || 'move'}
@@ -42,11 +42,11 @@ export default function Book({ book, onMove, isDisabled }) {
 }
 
 Book.defaultProps = {
-  isDisabled: false,
+  disable: false,
 };
 
 Book.propTypes = {
   book: PropTypes.object.isRequired,
   onMove: PropTypes.func.isRequired,
-  isDisabled: PropTypes.bool.isRequired,
+  disable: PropTypes.bool.isRequired,
 };

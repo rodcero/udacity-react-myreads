@@ -32,45 +32,28 @@ class BooksApp extends React.Component {
   }
 
   onMove = (book, shelf) => {
-    this.removeBookFromShelf(book.id, book.shelf);
-    if (shelf === 'none') {
-      this.addBook(book, shelf).then(() => {
+    BooksAPI.update(book, shelf).then(booksByShelf => {
+      this.setState(prev => ({
+        books: { ...prev.books, [book.id]: { ...book, shelf } },
+        booksByShelf,
+      }));
+
+      if (shelf === 'none') {
         let books = { ...this.state.books };
         delete books[book.id];
         this.setState({ books: { ...books } });
-      });
-    } else {
-      this.addBookToShelf(book.id, shelf);
-    }
-  };
-
-  addBook = (book, shelf) => {
-    return BooksAPI.update(book, shelf).then(res => {
-      this.setState(prev => ({
-        books: { ...prev.books, [book.id]: book },
-        booksByShelf: res,
-      }));
+      }
     });
   };
 
-  addBookToShelf = (bookid, shelf) => {
-    console.log('addBookToShelf', bookid, shelf);
-    this.setState(prev => ({
-      booksByShelf: {
-        ...prev.booksByShelf,
-        [shelf]: [...prev.booksByShelf[shelf], bookid],
-      },
-    }));
-  };
-
-  removeBookFromShelf = (bookid, shelf) => {
-    console.log('removeBookFromShelf', bookid, shelf);
-    const shelfBooks = [...this.state.booksByShelf[shelf]].filter(
-      id => id !== bookid
-    );
-    this.setState(prev => ({
-      booksByShelf: { ...prev.booksByShelf, [shelf]: shelfBooks },
-    }));
+  addBook = (book, shelf) => {
+    book.shelf = shelf;
+    return BooksAPI.update(book, shelf).then(booksByShelf => {
+      this.setState(prev => ({
+        books: { ...prev.books, [book.id]: book },
+        booksByShelf,
+      }));
+    });
   };
 
   render() {
