@@ -1,10 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-export default function Book({ book, onMove, disable, disableDelete }) {
+export default function Book({ book, onMove, shelved, shelf }) {
+  const shelfNames = {
+    currentlyReading: 'Currently Reading',
+    wantToRead: 'Want to Read',
+    read: 'Read',
+  };
+
   return (
     <li>
       <div className="book">
+        {shelved && <div className="shelved">{shelfNames[shelf]}</div>}
         <div className="book-top">
           <div
             className="book-cover"
@@ -14,27 +21,20 @@ export default function Book({ book, onMove, disable, disableDelete }) {
               backgroundImage: book.imageLinks
                 ? `url("${book.imageLinks.thumbnail}")`
                 : 'none',
-              opacity: disable && '.5',
+              border: shelved && '5px solid #de773a',
             }}
           ></div>
-          {!disable && (
-            <div className="book-shelf-changer">
-              <select
-                value={book.shelf || 'none'}
-                onChange={ev => onMove(ev.target.value)}
-              >
-                <option value="move" disabled>
-                  Move to...
-                </option>
-                <option value="currentlyReading">Currently Reading</option>
-                <option value="wantToRead">Want to Read</option>
-                <option value="read">Read</option>
-                <option value="none" disabled={disableDelete}>
-                  None
-                </option>
-              </select>
-            </div>
-          )}
+          <div className="book-shelf-changer">
+            <select value={shelf} onChange={ev => onMove(ev.target.value)}>
+              <option value="move" disabled>
+                Move to...
+              </option>
+              <option value="currentlyReading">Currently Reading</option>
+              <option value="wantToRead">Want to Read</option>
+              <option value="read">Read</option>
+              <option value="none">None</option>
+            </select>
+          </div>
         </div>
         <div className="book-title">{book.title}</div>
         <div className="book-authors">
@@ -46,13 +46,13 @@ export default function Book({ book, onMove, disable, disableDelete }) {
 }
 
 Book.defaultProps = {
-  disable: false,
-  disableDelete: false,
+  shelved: false,
+  shelf: 'none',
 };
 
 Book.propTypes = {
   book: PropTypes.object.isRequired,
   onMove: PropTypes.func.isRequired,
-  disable: PropTypes.bool.isRequired,
-  disableDelete: PropTypes.bool,
+  shelved: PropTypes.bool.isRequired,
+  shelf: PropTypes.string.isRequired,
 };

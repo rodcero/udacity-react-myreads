@@ -2,7 +2,6 @@ import React from 'react';
 import Book from './Book';
 
 export default function Bookshelf({ title, books, onMove }) {
-  console.log(title, books);
   return (
     <div className="bookshelf">
       <h2 className="bookshelf-title">{title}</h2>
@@ -12,6 +11,7 @@ export default function Bookshelf({ title, books, onMove }) {
             <Book
               key={index}
               book={book}
+              shelf={book.shelf}
               onMove={destination => onMove(book, destination)}
             />
           ))}

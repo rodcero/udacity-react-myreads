@@ -89,7 +89,10 @@ export default class Search extends Component {
                 <Book
                   key={index}
                   book={book}
-                  disable={bookCollection[book.id] != null}
+                  shelf={
+                    bookCollection[book.id] && bookCollection[book.id].shelf
+                  }
+                  shelved={bookCollection[book.id] != null}
                   onMove={shelf => this.onMove(book, shelf)}
                 />
               ))
