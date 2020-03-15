@@ -90,6 +90,7 @@ export default class Search extends Component {
                   book={book}
                   disable={bookCollection[book.id] != null}
                   onMove={shelf => this.onMove(book, shelf)}
+                  disableDelete={true}
                 />
               ))
             )}

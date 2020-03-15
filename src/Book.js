@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-export default function Book({ book, onMove, disable }) {
+export default function Book({ book, onMove, disable, disableDelete }) {
   return (
     <li>
       <div className="book">
@@ -27,7 +27,9 @@ export default function Book({ book, onMove, disable }) {
                 <option value="currentlyReading">Currently Reading</option>
                 <option value="wantToRead">Want to Read</option>
                 <option value="read">Read</option>
-                <option value="none">None</option>
+                <option value="none" disabled={disableDelete}>
+                  None
+                </option>
               </select>
             </div>
           )}
@@ -43,10 +45,12 @@ export default function Book({ book, onMove, disable }) {
 
 Book.defaultProps = {
   disable: false,
+  disableDelete: false,
 };
 
 Book.propTypes = {
   book: PropTypes.object.isRequired,
   onMove: PropTypes.func.isRequired,
   disable: PropTypes.bool.isRequired,
+  disableDelete: PropTypes.bool,
 };
