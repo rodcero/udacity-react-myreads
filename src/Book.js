@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 export default function Book({ book, onShelve, shelved, shelf }) {
-  const shelfNames = {
+  const shelveNames = {
     currentlyReading: 'Currently Reading',
     wantToRead: 'Want to Read',
     read: 'Read',
@@ -12,7 +12,7 @@ export default function Book({ book, onShelve, shelved, shelf }) {
   return (
     <li>
       <div className="book">
-        {shelved && <div className="shelved">{shelfNames[shelf]}</div>}
+        {shelved && <div className="shelved">{shelveNames[shelf]}</div>}
         <div className="book-top">
           <div
             className="book-cover"
