@@ -26,6 +26,8 @@ export default class Search extends Component {
           console.log(e);
           this.setState({ books: [], error: true });
         });
+    } else {
+      this.setState({ books: [], error: false });
     }
   }
 
