@@ -20,10 +20,11 @@ export default class Search extends Component {
     if (query) {
       BooksAPI.search(query)
         .then(books => {
+          if (!Array.isArray(books)) throw new Error('API query error');
+
           this.setState({ books, error: false });
         })
         .catch(e => {
-          console.log(e);
           this.setState({ books: [], error: true });
         });
     } else {
